@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 public class BroadcastTask implements Runnable {
 	private String statement;
+	private int index = 0;
 
 	public BroadcastTask(String statement) {
 
@@ -23,6 +24,10 @@ public class BroadcastTask implements Runnable {
 
 				p.sendMessage(ChatColor.translateAlternateColorCodes('&',
 						statement));
+		}
+		index++;
+		if (index >= 1) {
+			index = 0;
 		}
 	}
 }
