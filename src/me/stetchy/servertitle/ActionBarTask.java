@@ -4,11 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class BroadcastTask implements Runnable {
+public class ActionBarTask implements Runnable {
 	private String statement;
 	private int index = 0;
 
-	public BroadcastTask(String statement) {
+	public ActionBarTask(String statement) {
 
 		this.statement = statement;
 	}

@@ -15,21 +15,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Events implements Listener, SubPlugin {
+public class Events extends JavaPlugin implements Listener, SubPlugin {
 	private String configText = "Default player text";
 	private String configsubText = "Default player subtext";
 	private String npconfigText = "Default new player text";
 	private String npconfigsubText = "Default new player subtext";
-	private String broadcast;
+	private String actbartext;
 	private int npfadeIn, npfadeOut, npstay, fadeIn, stay, fadeOut,
 			timeinMinutes;
 	int scheduler = -1;
-	JavaPlugin jp;
 	ChatColor npcolour, colour;
-
-	public Events(JavaPlugin jp) {
-		this.jp = jp;
-	}
+	JavaPlugin jp;
 
 	private void resetScheduler() {
 		if (scheduler >= 0) {
@@ -37,19 +33,20 @@ public class Events implements Listener, SubPlugin {
 		}
 		jp.getServer()
 				.getScheduler()
-				.scheduleSyncRepeatingTask(jp, new BroadcastTask(broadcast),
+				.scheduleSyncRepeatingTask(jp, new ActionBarTask(actbartext),
 						0L, 1200 * timeinMinutes);
 	}
 
-	public boolean onEnable() {
+	@Override
+	public boolean onStart() {
 		setupConfig();
 		if (!jp.getConfig().getBoolean("servertitle.enabled")) {
 			return false;
 		}
-		broadcast = jp.getConfig().getString(
-				"servertitle.announcer.announcement");
+		actbartext = jp.getConfig().getString(
+				"servertitle.actionbar.text");
 		timeinMinutes = jp.getConfig().getInt(
-				"servertitle.announcer.minutesbetween");
+				"servertitle.actionbar.constant");
 		Bukkit.getPluginManager().registerEvents(this, jp);
 		resetScheduler();
 		Main.addSubPlugin(this);
@@ -57,7 +54,7 @@ public class Events implements Listener, SubPlugin {
 	}
 
 	private void setupConfig() {
-		FileConfiguration fc = this.jp.getConfig();
+		FileConfiguration fc = jp.getConfig();
 		fc.addDefault("servertitle.enabled", true);
 		fc.addDefault("servertitle.onJoin.newplayer.nptext", npconfigText);
 		fc.addDefault("servertitle.onJoin.newplayer.npsubtext", npconfigsubText);
@@ -73,7 +70,7 @@ public class Events implements Listener, SubPlugin {
 		fc.addDefault("servertitle.onJoin.fadeout", 40);
 		fc.addDefault("servertitle.onJoin.colour",
 				ChatColor.DARK_PURPLE.getChar() + "");
-		fc.addDefault("servertitle.announcer.timebetween", 10);
+		fc.addDefault("servertitle.actionbar.constant", 10);
 		List<String> configB = new ArrayList() {
 			{
 				this.add("&dDefault message");
@@ -81,9 +78,10 @@ public class Events implements Listener, SubPlugin {
 		};
 		fc.addDefault("servertitle.announcer.announcement", configB);
 		fc.options().copyDefaults(true);
-		this.jp.saveConfig();
+		jp.saveConfig();
 	}
-
+	
+	@Override
 	public void onDisable() {
 	}
 
