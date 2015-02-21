@@ -1,8 +1,10 @@
 package me.stetchy.servertitle;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import me.stetchy.Main;
+import me.stetchy.SubPlugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,14 +15,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Events implements SubPlugin, Listener {
+public class Events implements Listener, SubPlugin {
 	private String configText = "Default player text";
 	private String configsubText = "Default player subtext";
 	private String npconfigText = "Default new player text";
 	private String npconfigsubText = "Default new player subtext";
-	private List<String> broadcastList;
+	private String broadcast;
 	private int npfadeIn, npfadeOut, npstay, fadeIn, stay, fadeOut,
-			timeinMinutes; 
+			timeinMinutes;
 	int scheduler = -1;
 	JavaPlugin jp;
 	ChatColor npcolour, colour;
@@ -33,12 +35,10 @@ public class Events implements SubPlugin, Listener {
 		if (scheduler >= 0) {
 			jp.getServer().getScheduler().cancelTask(scheduler);
 		}
-		Collections.shuffle(broadcastList);
 		jp.getServer()
 				.getScheduler()
-				.scheduleSyncRepeatingTask(jp,
-						new BroadcastTask(broadcastList), 0L,
-						1200 * timeinMinutes);
+				.scheduleSyncRepeatingTask(jp, new BroadcastTask(broadcast),
+						0L, 1200 * timeinMinutes);
 	}
 
 	public boolean onEnable() {
@@ -46,12 +46,13 @@ public class Events implements SubPlugin, Listener {
 		if (!jp.getConfig().getBoolean("servertitle.enabled")) {
 			return false;
 		}
-		broadcastList = jp.getConfig().getStringList(
+		broadcast = jp.getConfig().getString(
 				"servertitle.announcer.announcement");
 		timeinMinutes = jp.getConfig().getInt(
 				"servertitle.announcer.minutesbetween");
 		Bukkit.getPluginManager().registerEvents(this, jp);
 		resetScheduler();
+		Main.addSubPlugin(this);
 		return true;
 	}
 

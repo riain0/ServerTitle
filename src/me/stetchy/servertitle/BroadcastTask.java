@@ -1,37 +1,28 @@
 package me.stetchy.servertitle;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class BroadcastTask implements Runnable {
-	private List<String> statements;
-	private int index = 0;
+	private String statement;
 
-	public BroadcastTask(List<String> statements) {
+	public BroadcastTask(String statement) {
 
-		this.statements = statements;
+		this.statement = statement;
 	}
 
 	@Override
 	public void run() {
 		try {
 			for (Player p : Bukkit.getOnlinePlayers())
-				for (String str : statements) {
-					TitleUtil.sendActionBar(p, str);
-				}
+				TitleUtil.sendActionBar(p, statement);
 		} catch (Exception e) {
 
 			for (Player p : Bukkit.getOnlinePlayers())
-				for (String str : statements) {
-					p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-							str));
-				}
+
+				p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+						statement));
 		}
-		index++;
-		if (index >= statements.size())
-			index = 0;
 	}
 }
