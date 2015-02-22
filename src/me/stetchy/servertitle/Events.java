@@ -20,41 +20,53 @@ public class Events extends JavaPlugin implements Listener, SubPlugin {
 	private String configsubText = "Default player subtext";
 	private String npconfigText = "Default new player text";
 	private String npconfigsubText = "Default new player subtext";
-	private String actbartext;
-	private int npfadeIn, npfadeOut, npstay, fadeIn, stay, fadeOut,
-			timeinMinutes;
+	private List<String> actbartext;
+	private int npfadeIn, npfadeOut, npstay, fadeIn, stay, fadeOut;
+	private static int time, amount;
 	int scheduler = -1;
 	ChatColor npcolour, colour;
-	JavaPlugin jp;
 
 	private void resetScheduler() {
-		if (scheduler >= 0) {
-			jp.getServer().getScheduler().cancelTask(scheduler);
-		}
-		jp.getServer()
+		if (scheduler >= 0)
+			this.getServer().getScheduler().cancelTask(scheduler);
+		this.getServer()
 				.getScheduler()
-				.scheduleSyncRepeatingTask(jp, new ActionBarTask(actbartext),
-						0L, 1200 * timeinMinutes);
+				.scheduleSyncRepeatingTask(this, new ActionBarTask(actbartext),
+						0L, 20);
+		this.getServer().getScheduler()
+				.scheduleSyncRepeatingTask(this, new Runnable() {
+
+					@Override
+					public void run() {
+						ActionBarTask.setCalled(ActionBarTask.getCalled() + 1);
+					}
+
+				}, 0L, 20);
+	}
+
+	@Override
+	public void onEnable() {
+		onStart();
+		Main.addSubPlugin(this);
+		resetScheduler();
 	}
 
 	@Override
 	public boolean onStart() {
 		setupConfig();
-		if (!jp.getConfig().getBoolean("servertitle.enabled")) {
+		if (!this.getConfig().getBoolean("servertitle.enabled")) {
 			return false;
 		}
-		actbartext = jp.getConfig().getString(
+		actbartext = this.getConfig().getStringList(
 				"servertitle.actionbar.text");
-		timeinMinutes = jp.getConfig().getInt(
-				"servertitle.actionbar.constant");
-		Bukkit.getPluginManager().registerEvents(this, jp);
-		resetScheduler();
-		Main.addSubPlugin(this);
+		amount = this.getConfig().getInt("servertitle.actionbar.amount");
+		time = this.getConfig().getInt("servertitle.actionbar.time");
+		Bukkit.getPluginManager().registerEvents(this, this);
 		return true;
 	}
 
 	private void setupConfig() {
-		FileConfiguration fc = jp.getConfig();
+		FileConfiguration fc = this.getConfig();
 		fc.addDefault("servertitle.enabled", true);
 		fc.addDefault("servertitle.onJoin.newplayer.nptext", npconfigText);
 		fc.addDefault("servertitle.onJoin.newplayer.npsubtext", npconfigsubText);
@@ -70,17 +82,20 @@ public class Events extends JavaPlugin implements Listener, SubPlugin {
 		fc.addDefault("servertitle.onJoin.fadeout", 40);
 		fc.addDefault("servertitle.onJoin.colour",
 				ChatColor.DARK_PURPLE.getChar() + "");
-		fc.addDefault("servertitle.actionbar.constant", 10);
-		List<String> configB = new ArrayList() {
+		List<String> configA = new ArrayList<String>() {
 			{
-				this.add("&dDefault message");
+				this.add("&dDefault text");
+				this.add("&aDefault text 2");
+				this.add("&cDefault text 3");
 			}
 		};
-		fc.addDefault("servertitle.announcer.announcement", configB);
+		fc.addDefault("servertitle.actionbar.text", configA);
+		fc.addDefault("servertitle.actionbar.time", 100);
+		fc.addDefault("servertitle.actionbar.amount", 3);
 		fc.options().copyDefaults(true);
-		jp.saveConfig();
+		this.saveConfig();
 	}
-	
+
 	@Override
 	public void onDisable() {
 	}
@@ -89,29 +104,29 @@ public class Events extends JavaPlugin implements Listener, SubPlugin {
 	public void onJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
 		if (!p.hasPlayedBefore()) {
-			npconfigText = validate(jp.getConfig().getString(
+			npconfigText = validate(this.getConfig().getString(
 					"servertitle.onJoin.newplayer.nptext"));
-			npconfigsubText = validate(jp.getConfig().getString(
+			npconfigsubText = validate(this.getConfig().getString(
 					"servertitle.onJoin.newplayer.npsubtext"));
-			npfadeOut = jp.getConfig().getInt(
+			npfadeOut = this.getConfig().getInt(
 					"servertitle.onJoin.newplayer.npfadeout");
-			npstay = jp.getConfig().getInt(
+			npstay = this.getConfig().getInt(
 					"servertitle.onJoin.newplayer.npstay");
-			npfadeIn = jp.getConfig().getInt(
+			npfadeIn = this.getConfig().getInt(
 					"servertitle.onJoin.newplayer.npfadein");
-			npcolour = ChatColor.getByChar(jp.getConfig().getString(
+			npcolour = ChatColor.getByChar(this.getConfig().getString(
 					"servertitle.onJoin.newplayer.colour"));
 			TitleUtil.sendTitle(p, npfadeIn, npstay, npfadeOut, npconfigText,
 					npconfigsubText, npcolour);
 		} else {
-			configText = validate(jp.getConfig().getString(
+			configText = validate(this.getConfig().getString(
 					"servertitle.onJoin.text"));
-			configsubText = validate(jp.getConfig().getString(
+			configsubText = validate(this.getConfig().getString(
 					"servertitle.onJoin.subtext"));
-			fadeOut = jp.getConfig().getInt("servertitle.onJoin.fadeout");
-			stay = jp.getConfig().getInt("servertitle.onJoin.stay");
-			fadeIn = jp.getConfig().getInt("servertitle.onJoin.fadein");
-			colour = ChatColor.getByChar(jp.getConfig().getString(
+			fadeOut = this.getConfig().getInt("servertitle.onJoin.fadeout");
+			stay = this.getConfig().getInt("servertitle.onJoin.stay");
+			fadeIn = this.getConfig().getInt("servertitle.onJoin.fadein");
+			colour = ChatColor.getByChar(this.getConfig().getString(
 					"servertitle.onJoin.colour"));
 			TitleUtil.sendTitle(p, fadeIn, stay, fadeOut, configText,
 					configsubText, colour);
@@ -120,5 +135,22 @@ public class Events extends JavaPlugin implements Listener, SubPlugin {
 
 	private String validate(String val) {
 		return val.length() > 5 ? val : "";
+	}
+
+	public static int getTime() {
+		return time;
+	}
+
+	public static void setTime(int time) {
+		Events.time = time;
+	}
+
+	public static int getAmount() {
+		return amount;
+	}
+
+	public static int setAmount(int amount) {
+		Events.amount = amount;
+		return amount;
 	}
 }
