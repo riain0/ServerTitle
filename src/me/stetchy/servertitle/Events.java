@@ -47,6 +47,7 @@ public class Events extends JavaPlugin implements Listener, SubPlugin {
 	@Override
 	public void onEnable() {
 		onStart();
+		Main.setName("ServerTitle");
 		Main.addSubPlugin(this);
 		resetScheduler();
 	}
