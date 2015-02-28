@@ -1,5 +1,5 @@
 name: ServerTitle
 version: 1
-main: me.stetchy.servertitle.Events
+main: me.stetchy.servertitle.ServerTitle
 author: Stetchy
 depend: [SubPlugin]
