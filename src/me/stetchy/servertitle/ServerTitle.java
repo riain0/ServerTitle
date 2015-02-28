@@ -89,12 +89,10 @@ public class ServerTitle extends JavaPlugin implements Listener, SubPlugin {
 			{
 				this.add("&dDefault text");
 				this.add("&aDefault text 2");
-				this.add("&cDefault text 3");
 			}
 		};
 		fc.addDefault("servertitle.actionbar.text", configA);
 		fc.addDefault("servertitle.actionbar.time", 100);
-		fc.addDefault("servertitle.actionbar.amount", 3);
 		fc.options().copyDefaults(true);
 		this.saveConfig();
 	}
