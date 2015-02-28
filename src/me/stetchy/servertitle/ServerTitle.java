@@ -16,13 +16,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ServerTitle extends JavaPlugin implements Listener, SubPlugin {
+
 	private String configText = "Default player text";
 	private String configsubText = "Default player subtext";
 	private String npconfigText = "Default new player text";
 	private String npconfigsubText = "Default new player subtext";
 	private List<String> actbartext;
 	private int npfadeIn, npfadeOut, npstay, fadeIn, stay, fadeOut;
-	private static int time, amount;
+	private static int time;
 	int scheduler = -1;
 	ChatColor npcolour, colour;
 
@@ -60,7 +61,6 @@ public class ServerTitle extends JavaPlugin implements Listener, SubPlugin {
 		}
 		actbartext = this.getConfig().getStringList(
 				"servertitle.actionbar.text");
-		amount = this.getConfig().getInt("servertitle.actionbar.amount");
 		time = this.getConfig().getInt("servertitle.actionbar.time");
 		Bukkit.getPluginManager().registerEvents(this, this);
 		return true;
@@ -84,6 +84,8 @@ public class ServerTitle extends JavaPlugin implements Listener, SubPlugin {
 		fc.addDefault("servertitle.onJoin.colour",
 				ChatColor.DARK_PURPLE.getChar() + "");
 		List<String> configA = new ArrayList<String>() {
+			private static final long serialVersionUID = -3557165452898714814L;
+
 			{
 				this.add("&dDefault text");
 				this.add("&aDefault text 2");
@@ -146,12 +148,4 @@ public class ServerTitle extends JavaPlugin implements Listener, SubPlugin {
 		ServerTitle.time = time;
 	}
 
-	public static int getAmount() {
-		return amount;
-	}
-
-	public static int setAmount(int amount) {
-		ServerTitle.amount = amount;
-		return amount;
-	}
 }

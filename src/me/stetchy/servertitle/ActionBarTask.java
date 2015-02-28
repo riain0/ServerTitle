@@ -1,17 +1,14 @@
 package me.stetchy.servertitle;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class ActionBarTask implements Runnable {
 	private List<String> statements;
 	private static int index = 1;
 	private static int called = 0;
-	JavaPlugin jp;
 
 	public ActionBarTask(List<String> statements) {
 
@@ -28,10 +25,6 @@ public class ActionBarTask implements Runnable {
 				if (index == 2) {
 					TitleUtil.sendActionBar(p, statements.get(1));
 				}
-				/*
-				 * if (Events.getAmount() == index) { for (Iterator<String> it =
-				 * statements.iterator(); it .hasNext(); index++) { sendA(); } }
-				 */
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -39,19 +32,14 @@ public class ActionBarTask implements Runnable {
 		if (called < ServerTitle.getTime()) {
 			index = 1;
 		}
-		if (called >= ServerTitle.getTime() && called < ServerTitle.getTime() * 2) {
+		if (called >= ServerTitle.getTime()
+				&& called < ServerTitle.getTime() * 2) {
 			index = 2;
 		}
 		if (called >= ServerTitle.getTime() * 2) {
 			called = 0;
 		}
 	}
-
-	/*
-	 * public void sendA() { for (Player p : Bukkit.getOnlinePlayers()) {
-	 * 
-	 * TitleUtil.sendActionBar(p, statements.get(index)); } }
-	 */
 
 	public static int getCalled() {
 		return called;
