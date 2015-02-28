@@ -15,7 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Events extends JavaPlugin implements Listener, SubPlugin {
+public class ServerTitle extends JavaPlugin implements Listener, SubPlugin {
 	private String configText = "Default player text";
 	private String configsubText = "Default player subtext";
 	private String npconfigText = "Default new player text";
@@ -143,7 +143,7 @@ public class Events extends JavaPlugin implements Listener, SubPlugin {
 	}
 
 	public static void setTime(int time) {
-		Events.time = time;
+		ServerTitle.time = time;
 	}
 
 	public static int getAmount() {
@@ -151,7 +151,7 @@ public class Events extends JavaPlugin implements Listener, SubPlugin {
 	}
 
 	public static int setAmount(int amount) {
-		Events.amount = amount;
+		ServerTitle.amount = amount;
 		return amount;
 	}
 }

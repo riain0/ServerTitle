@@ -36,13 +36,13 @@ public class ActionBarTask implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (called < Events.getTime()) {
+		if (called < ServerTitle.getTime()) {
 			index = 1;
 		}
-		if (called >= Events.getTime() && called < Events.getTime() * 2) {
+		if (called >= ServerTitle.getTime() && called < ServerTitle.getTime() * 2) {
 			index = 2;
 		}
-		if (called >= Events.getTime() * 2) {
+		if (called >= ServerTitle.getTime() * 2) {
 			called = 0;
 		}
 	}
