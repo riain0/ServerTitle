@@ -1,0 +1,28 @@
+# onJoin is when the player joins the server, new player for a player that hasn't joined before and outside of new player - for those who have played 
+# before. Fade in is the time it takes for the text to appear, stay the time it stays for and fade out the time it takes to fade out, all are in ticks. (20 ticks = 1 second) 
+# To change colour use the colour code, leave out the ampersand (&).
+# To remove a text/subtext have a text less than 4 characters.
+# ActionBar currently can only have two texts.
+servertitle:
+  enabled: true
+  onJoin:
+    newplayer:
+      nptext: Default new player text
+      npsubtext: Default new player subtext
+      npfadein: 40
+      npstay: 240
+      npfadeout: 40
+      colour: '5'
+    text: Default player text
+    subtext: Default player text
+    fadein: 40
+    stay: 240
+    fadeout: 40
+    colour: '5'
+  actionbar:
+    time: 100
+    amount: 3
+    text:
+    - '&dDefault text'
+    - '&aDefault text 2'
+    - '&cDefault text 3'
