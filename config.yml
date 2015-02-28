@@ -3,6 +3,7 @@
 # To change colour use the colour code, leave out the ampersand (&).
 # To remove a text/subtext have a text less than 4 characters.
 # ActionBar currently can only have two texts.
+# Actionbar time is in seconds.
 servertitle:
   enabled: true
   onJoin:
@@ -25,4 +26,3 @@ servertitle:
     text:
     - '&dDefault text'
     - '&aDefault text 2'
-    - '&cDefault text 3'
