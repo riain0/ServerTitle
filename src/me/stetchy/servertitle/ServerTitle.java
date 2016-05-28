@@ -24,7 +24,6 @@ public class ServerTitle extends JavaPlugin implements Listener {
 	private static int time;
 	int scheduler = -1;
 	ChatColor npcolour, colour;
-	List subPluginList = new ArrayList();
 
 	private void resetScheduler() {
 		if (scheduler >= 0)
