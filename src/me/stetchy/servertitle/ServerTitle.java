@@ -46,15 +46,8 @@ public class ServerTitle extends JavaPlugin implements Listener {
 
 	@Override
 	public void onEnable() {
-		onStart();
-		Main.setName("ServerTitle");
-		Main.addSubPlugin(this);
-		resetScheduler();
-	}
-
-	@Override
-	public void onEnable() {
 		setupConfig();
+		resetScheduler();
 		if (!this.getConfig().getBoolean("servertitle.enabled")) {
 			return false;
 		}
@@ -144,23 +137,4 @@ public class ServerTitle extends JavaPlugin implements Listener {
 	public static void setTime(int time) {
 		ServerTitle.time = time;
 	}
-	
-	private void loadSubPlugins() {
-		Iterator iter = subPluginList.iterator();
-		while (iter.hasNext()) {
-	    	try {
-			if (!((SubPlugin) iter.next()).onEnable())
-		    	iter.remove();
-		 } catch (Exception exception) {
-		 	System.out.println("Error");
-	    }
-	}
-	
-	public void setupSubPlugin() {
-		subPluginList.add(new)
-	}
-	
-    }
-
-
 }
