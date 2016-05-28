@@ -1,4 +1,4 @@
-package me.stetchy;
+package me.stetchy.servertitle;
 
 public interface SubPlugin {
 
