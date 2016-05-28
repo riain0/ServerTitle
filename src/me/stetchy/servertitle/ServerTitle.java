@@ -3,8 +3,6 @@ package me.stetchy.servertitle;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.stetchy.Main;
-import me.stetchy.SubPlugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,7 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ServerTitle extends JavaPlugin implements Listener, SubPlugin {
+public class ServerTitle extends JavaPlugin implements Listener {
 
 	private String configText = "Default player text";
 	private String configsubText = "Default player subtext";
@@ -26,6 +24,7 @@ public class ServerTitle extends JavaPlugin implements Listener, SubPlugin {
 	private static int time;
 	int scheduler = -1;
 	ChatColor npcolour, colour;
+	List subPluginList = new ArrayList();
 
 	private void resetScheduler() {
 		if (scheduler >= 0)
@@ -54,7 +53,7 @@ public class ServerTitle extends JavaPlugin implements Listener, SubPlugin {
 	}
 
 	@Override
-	public boolean onStart() {
+	public void onEnable() {
 		setupConfig();
 		if (!this.getConfig().getBoolean("servertitle.enabled")) {
 			return false;
@@ -145,5 +144,23 @@ public class ServerTitle extends JavaPlugin implements Listener, SubPlugin {
 	public static void setTime(int time) {
 		ServerTitle.time = time;
 	}
+	
+	private void loadSubPlugins() {
+		Iterator iter = subPluginList.iterator();
+		while (iter.hasNext()) {
+	    	try {
+			if (!((SubPlugin) iter.next()).onEnable())
+		    	iter.remove();
+		 } catch (Exception exception) {
+		 	System.out.println("Error");
+	    }
+	}
+	
+	public void setupSubPlugin() {
+		subPluginList.add(new)
+	}
+	
+    }
+
 
 }
