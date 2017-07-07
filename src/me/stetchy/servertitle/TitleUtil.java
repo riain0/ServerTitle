@@ -15,8 +15,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-//Modified opensource code from bukkit forums, all credit to original owner
-
 public class TitleUtil {
 
 	public static void sendTitle(Player player, Integer fadeIn, Integer stay,
